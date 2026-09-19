@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<!-- ============================================================
+  THE SOLAR CO — NZ Solar Lead-Generation Website (Single-file)
+  ------------------------------------------------------------
+  DESIGN SYSTEM / DEVELOPER NOTES
+  Colors:
+    Navy (headings)      #24384C
+    Navy-2 (strong body) #33495F
+    Body text            #51617A
+    Muted                #66768A
+    Brand orange         #F7941E
+    Orange deep (links)  #D97706
+    Orange soft tint     #FDE9D2
+    Warm off-white       #FAF6EF
+    Light neutral        #F3F5F7
+    Lines / borders      #EAE3D6 / #E4E7EB
+  Typography:
+    Headings / buttons : Plus Jakarta Sans (600–800)
+    Body               : Inter (400–600)
+  Spacing scale: 8px base · sections 96px desktop / 64px mobile
+  Radii: inputs 12px · cards 18px · buttons 999px (pill)
+  Interactions:
+    · Hash router (Home/About/Services/Testimonials/Contact) with active nav states
+    · Sticky header (shadow on scroll) + animated mobile menu
+    · Quote modal (all "Get a Quote" CTAs) w/ focus return + ESC/overlay close
+    · Validated lead forms (name/email/phone/type/location/message) + success state
+    · Savings estimator slider · animated counters · reveal-on-scroll
+    · Review carousel (snap + arrows + dots + autoplay) · FAQ accordion
+  Breakpoints: 1080px (nav) · 960px (2-col grids) · 640px (1-col)
+============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Solar Co — NZ Solar Panels, Batteries & Installation</title>
+<meta name="description" content="The Solar Co designs, installs and cares for premium solar panel and battery systems across New Zealand. Fixed quotes, local experts, 25-year warranties.">
+<link rel="icon" href="https://www.designarena.ai/u/61d735e7-e1cc-48b6-999b-97f031034be0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ---------- TOKENS ---------- */
+:root{
+  --navy:#24384C; --navy-2:#33495F; --body:#51617A; --muted:#66768A;
+  --orange:#F7941E; --orange-deep:#D97706; --orange-soft:#FDE9D2;
+  --cream:#FAF6EF; --mist:#F3F5F7; --line:#EAE3D6; --line-2:#E4E7EB;
+  --white:#fff; --err:#C93A3A;
+  --font-head:'Plus Jakarta Sans',sans-serif; --font-body:'Inter',sans-serif;
+  --shadow-sm:0 6px 18px rgba(36,56,76,.06);
+  --shadow-md:0 14px 34px rgba(36,56,76,.10);
+  --shadow-lg:0 28px 64px rgba(36,56,76,.14);
+  --r-card:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--body);background:var(--white);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+ul{list-style:none}
+button{font-family:inherit;cursor:pointer}
+::selection{background:var(--orange-soft);color:var(--navy)}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:4px}
+h1,h2,h3,h4{font-family:var(--font-head);color:var(--navy);line-height:1.18;letter-spacing:-.015em}
+h1{font-size:clamp(2.35rem,5vw,3.5rem);font-weight:800}
+h2{font-size:clamp(1.75rem,3.2vw,2.45rem);font-weight:800}
+h3{font-size:1.15rem;font-weight:700}
+p.lead{font-size:1.1rem;max-width:60ch}
+
+/* ---------- LAYOUT ---------- */
+.container{width:min(1180px,100% - 48px);margin-inline:auto}
+.section{padding:96px 0}
+.sec-cream{background:var(--cream)}
+.sec-mist{background:var(--mist)}
+.sec-head{max-width:660px;margin:0 auto 56px;text-align:center}
+.sec-head.split{max-width:none;display:flex;justify-content:space-between;align-items:flex-end;gap:28px;text-align:left;margin-bottom:44px}
+.sec-head h2{margin:14px 0 12px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center}
+
+/* ---------- REUSABLES ---------- */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:800;letter-spacing:.16em;text-transform:uppercase;font-size:.74rem;color:var(--orange-deep)}
+.eyebrow .arc{width:26px;height:auto}
+.hl{color:var(--orange-deep);text-decoration:underline;text-decoration-color:var(--orange);text-decoration-thickness:6px;text-underline-offset:7px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-head);font-weight:700;font-size:1rem;line-height:1;border-radius:999px;padding:16px 30px;border:2px solid transparent;text-decoration:none;transition:all .25s ease;white-space:nowrap}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--orange);color:#1F2F40;box-shadow:0 10px 24px rgba(247,148,30,.30)}
+.btn-primary:hover{background:#FFA43B;transform:translateY(-2px);box-shadow:0 16px 32px rgba(247,148,30,.34)}
+.btn-ghost{border-color:rgba(36,56,76,.24);color:var(--navy);background:rgba(255,255,255,.7)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange-deep);transform:translateY(-2px)}
+.btn-sm{padding:12px 22px;font-size:.92rem}
+.text-link{display:inline-flex;align-items:center;gap:7px;color:var(--orange-deep);font-weight:700;text-decoration:none;font-size:.95rem;transition:gap .25s,color .25s;background:none;border:0;font-family:var(--font-head)}
+.text-link svg{width:16px;height:16px}
+.text-link:hover{gap:12px;color:var(--navy)}
+.icon-badge{width:54px;height:54px;border-radius:14px;background:var(--orange-soft);color:var(--orange-deep);display:grid;place-items:center;margin-bottom:18px}
+.icon-badge svg{width:24px;height:24px}
+.tick{width:23px;height:23px;border-radius:50%;background:var(--orange-soft);color:var(--orange-deep);display:inline-grid;place-items:center;flex:none}
+.tick svg{width:13px;height:13px}
+.ticks{display:grid;gap:14px;margin:22px 0 28px}
+.ticks li{display:flex;gap:12px;align-items:flex-start;color:var(--navy-2);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips li{background:var(--mist);border:1px solid var(--line-2);color:var(--navy-2);font-weight:600;font-size:.8rem;padding:7px 14px;border-radius:999px}
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+[data-reveal].revealed{opacity:1;transform:none}
+
+/* ---------- TOPBAR + HEADER ---------- */
+.topbar{background:var(--cream);border-bottom:1px solid var(--line);font-size:.82rem}
+.topbar-in{display:flex;justify-content:space-between;align-items:center;padding:9px 0;gap:16px}
+.topbar a{display:inline-flex;align-items:center;gap:7px;color:var(--navy-2);font-weight:600;text-decoration:none}
+.topbar a:hover{color:var(--orange-deep)}
+.topbar svg{width:14px;height:14px;color:var(--orange-deep)}
+.tb-right{display:flex;gap:22px}
+.site-header{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--line-2);transition:box-shadow .25s}
+.site-header.scrolled{box-shadow:0 8px 28px rgba(36,56,76,.09)}
+.header-in{display:flex;align-items:center;justify-content:space-between;height:74px;gap:20px}
+.brand{display:inline-flex;align-items:center;text-decoration:none}
+.brand-logo{height:44px;width:auto}
+.logo-fallback{display:none;font-family:var(--font-head);font-weight:800;color:var(--navy);font-size:1.15rem;letter-spacing:.01em}
+.logo-fallback b{color:var(--orange-deep)}
+.main-nav{display:flex;align-items:center;gap:30px}
+.nav-link{position:relative;font-family:var(--font-head);font-weight:600;font-size:.95rem;color:var(--navy-2);text-decoration:none;padding:10px 2px}
+.nav-link::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:3px;border-radius:3px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav-link:hover{color:var(--navy)}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1)}
+.nav-link.active{color:var(--navy)}
+.header-actions{display:flex;align-items:center;gap:14px}
+.nav-cta{display:none}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:46px;height:46px;border:1px solid var(--line-2);border-radius:12px;background:#fff;align-items:center}
+.nav-toggle span{display:block;width:20px;height:2px;border-radius:2px;background:var(--navy);transition:.3s}
+.site-header.menu-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.site-header.menu-open .nav-toggle span:nth-child(2){opacity:0}
+.site-header.menu-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ---------- HERO ---------- */
+.hero,.page-hero{position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(94deg,rgba(251,248,241,.98) 6%,rgba(251,248,241,.92) 34%,rgba(251,248,241,.58) 58%,rgba(251,248,241,.12) 100%)}
+.hero-in{position:relative;display:flex;align-items:center;padding:96px 0 140px;min-height:600px}
+.hero-content{max-width:620px}
+.hero-content h1{margin:20px 0 18px}
+.hero-content .lead{margin-bottom:32px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:34px}
+.hero-trust{display:flex;flex-wrap:wrap;gap:10px 26px}
+.hero-trust li{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.92rem;color:var(--navy-2)}
+.hero-trust svg{width:17px;height:17px;color:var(--orange-deep)}
+.page-hero .hero-overlay{background:linear-gradient(92deg,rgba(251,248,241,.97) 10%,rgba(251,248,241,.86) 45%,rgba(251,248,241,.35) 100%)}
+.page-hero-in{position:relative;max-width:640px;padding:120px 0 84px}
+.page-hero-in h1{margin:18px 0 14px;font-size:clamp(2.1rem,4.4vw,3rem)}
+.page-head{background:var(--cream);border-bottom:1px solid var(--line);padding:72px 0}
+.page-head h1{margin:14px 0 12px;font-size:clamp(2.1rem,4vw,2.8rem)}
+
+/* ---------- STATS ---------- */
+.stats-card{position:relative;z-index:5;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-lg);display:grid;grid-template-columns:repeat(4,1fr);padding:38px 16px;margin-top:-70px}
+.stat{text-align:center;padding:4px 14px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat-num{display:block;font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--navy);line-height:1.1}
+.stat-label{font-size:.85rem;font-weight:600;color:var(--muted)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.stats-row .stat{border:0;background:#fff;border:1px solid var(--line);border-radius:var(--r-card);padding:30px 16px;box-shadow:var(--shadow-sm)}
+
+/* ---------- CARDS ---------- */
+.benefit-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-card);padding:32px 26px;transition:transform .3s,box-shadow .3s,border-color .3s}
+.benefit-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);border-color:#F3CE9C}
+.benefit-card p{font-size:.95rem;margin-top:8px}
+.benefit-card h3{font-size:1.1rem}
+.srv-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-card);padding:30px 26px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s,border-color .3s}
+.srv-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);border-color:#F3CE9C}
+.srv-card p{font-size:.93rem;margin:8px 0 18px}
+.srv-card .text-link{margin-top:auto}
+.sol-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.sol-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.sol-img{position:relative;aspect-ratio:16/9.5;overflow:hidden}
+.sol-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.sol-card:hover .sol-img img{transform:scale(1.05)}
+.sol-tag{position:absolute;top:16px;left:16px;background:#fff;color:var(--navy);font-family:var(--font-head);font-weight:700;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;border-radius:999px;box-shadow:var(--shadow-sm)}
+.sol-body{padding:28px}
+.sol-body p{margin:10px 0 18px;font-size:.96rem}
+.step-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-card);padding:30px 26px;transition:transform .3s,box-shadow .3s}
+.step-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.step-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.step-num{font-family:var(--font-head);font-size:2.6rem;font-weight:800;color:var(--orange);opacity:.4;line-height:1}
+.step-card .icon-badge{margin-bottom:0;width:50px;height:50px}
+.step-card p{font-size:.93rem;margin-top:8px}
+.hiw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.hiw-step{position:relative;text-align:center;padding:0 6px}
+.hiw-step::after{content:"";position:absolute;top:37px;left:calc(50% + 54px);width:calc(100% - 108px);border-top:2px dashed #F2C389}
+.hiw-step:last-child::after{display:none}
+.hiw-icon{width:76px;height:76px;border-radius:50%;background:#fff;border:2px solid var(--orange-soft);display:grid;place-items:center;margin:0 auto 18px;box-shadow:var(--shadow-sm);color:var(--orange-deep)}
+.hiw-icon svg{width:30px;height:30px}
+.step-tag{display:block;font-family:var(--font-head);font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--orange-deep);margin-bottom:6px}
+.hiw-step p{font-size:.9rem;margin-top:6px}
+.hiw-note{text-align:center;margin-top:44px;color:var(--muted)}
+.float-card{position:absolute;bottom:-26px;right:-18px;background:#fff;border-radius:16px;padding:18px 22px;box-shadow:var(--shadow-lg);max-width:230px;border:1px solid var(--line)}
+.fc-num{display:block;font-family:var(--font-head);font-weight:800;font-size:2rem;color:var(--orange-deep);line-height:1}
+.fc-text{font-size:.82rem;font-weight:600;color:var(--muted)}
+.split-media{position:relative}
+.split-media img{border-radius:22px;width:100%;aspect-ratio:4/3;object-fit:cover;box-shadow:var(--shadow-md)}
+
+/* ---------- REVIEWS ---------- */
+.review-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-card);padding:26px;display:flex;flex-direction:column;gap:13px}
+.review-card .quote-ic{color:var(--orange);width:26px;height:26px}
+.review-card>p{color:var(--navy-2);font-size:.95rem}
+.rv-foot{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:6px}
+.rv-foot img{width:46px;height:46px;border-radius:50%;object-fit:cover}
+.rv-name{font-family:var(--font-head);font-weight:700;color:var(--navy);font-size:.93rem;line-height:1.2}
+.rv-meta{font-size:.8rem;color:var(--muted)}
+.verified{display:inline-flex;align-items:center;gap:6px;color:var(--orange-deep);font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em}
+.verified svg{width:14px;height:14px}
+.stars{display:flex;gap:2px}
+.stars svg{width:16px;height:16px;color:var(--orange);fill:var(--orange)}
+.t-viewport{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 4px 20px;scrollbar-width:none}
+.t-viewport::-webkit-scrollbar{display:none}
+.t-viewport .review-card{flex:0 0 calc((100% - 48px)/3);scroll-snap-align:start}
+.car-nav{display:flex;gap:10px}
+.car-btn{width:46px;height:46px;border-radius:50%;border:1px solid var(--line-2);background:#fff;color:var(--navy);display:grid;place-items:center;transition:.25s}
+.car-btn svg{width:19px;height:19px}
+.car-btn:hover{border-color:var(--orange);color:var(--orange-deep);transform:translateY(-2px)}
+.t-foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.dots{display:flex;gap:8px}
+.dots button{width:9px;height:9px;border-radius:99px;border:0;background:#E7DCC7;transition:.25s}
+.dots button.active{width:28px;background:var(--orange)}
+.rv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.gallery figure{overflow:hidden;border-radius:16px;aspect-ratio:4/3}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.gallery figure:hover img{transform:scale(1.06)}
+.rating-band{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:24px}
+.rating-hero{background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px;box-shadow:var(--shadow-sm)}
+.rating-hero .big{font-family:var(--font-head);font-size:3.4rem;font-weight:800;color:var(--navy);line-height:1}
+.platform-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px 26px;box-shadow:var(--shadow-sm)}
+.platform-card .score{font-family:var(--font-head);font-weight:800;font-size:1.7rem;color:var(--navy)}
+.platform-card p{font-size:.83rem;color:var(--muted);font-weight:600}
+.feat-story{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
+.feat-story img{border-radius:22px;aspect-ratio:4/3.2;object-fit:cover;width:100%;box-shadow:var(--shadow-md)}
+.feat-quote{font-family:var(--font-head);font-size:clamp(1.25rem,2.2vw,1.6rem);font-weight:700;color:var(--navy);line-height:1.4;margin:16px 0 20px}
+
+/* ---------- FAQ ---------- */
+.faq-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}
+.faq-help{background:var(--cream);border:1px solid var(--line);border-radius:var(--r-card);padding:26px;margin-top:30px}
+.faq-help p{font-size:.92rem;margin:6px 0 16px}
+.faq-item{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.faq-item.open{border-color:#F3CE9C;box-shadow:var(--shadow-sm)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:19px 22px;font-family:var(--font-head);font-weight:700;color:var(--navy);font-size:.99rem;background:none;border:0;text-align:left}
+.faq-q .chev{width:19px;height:19px;color:var(--orange-deep);flex:none;transition:transform .3s}
+.faq-item.open .chev{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-a p{padding:0 22px 20px;font-size:.94rem}
+
+/* ---------- FORMS ---------- */
+.quote-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:64px;align-items:start}
+.form-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:36px;box-shadow:var(--shadow-md)}
+.form-card>h3{font-size:1.35rem}
+.form-sub{font-size:.9rem;color:var(--muted);margin:6px 0 22px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-family:var(--font-head);font-size:.85rem;font-weight:700;color:var(--navy)}
+.field label .req{color:var(--orange-deep)}
+input,select,textarea{width:100%;padding:13px 15px;border:1.5px solid var(--line-2);border-radius:12px;font:inherit;color:var(--navy);background:#fff;transition:border-color .2s,box-shadow .2s;appearance:none}
+textarea{resize:vertical;min-height:104px}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23D97706' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center;padding-right:40px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 4px rgba(247,148,30,.16)}
+.invalid{border-color:var(--err)!important;box-shadow:0 0 0 4px rgba(201,58,58,.10)!important}
+.field-error{display:none;font-size:.78rem;font-weight:600;color:var(--err)}
+.field.has-error .field-error{display:block}
+.form-micro{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);margin-top:14px}
+.form-micro svg{width:14px;height:14px;color:var(--orange-deep)}
+.form-success{text-align:center;padding:34px 8px}
+.success-ic{width:70px;height:70px;border-radius:50%;background:var(--orange-soft);color:var(--orange-deep);display:grid;place-items:center;margin:0 auto 20px}
+.success-ic svg{width:32px;height:32px}
+.form-success h3{font-size:1.4rem;margin-bottom:10px}
+.form-success p{font-size:.95rem;max-width:36ch;margin:0 auto 24px}
+.estimator{background:#fff;border:1px solid var(--line);border-radius:var(--r-card);padding:26px;margin-top:30px;box-shadow:var(--shadow-sm)}
+.est-head{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:800;color:var(--navy);margin-bottom:14px}
+.est-head svg{width:19px;height:19px;color:var(--orange-deep)}
+.estimator label{font-size:.88rem;font-weight:600;color:var(--navy-2)}
+.estimator input[type=range]{width:100%;accent-color:var(--orange);margin:10px 0 4px;padding:0;border:0;box-shadow:none}
+.est-out{display:flex;gap:32px;margin-top:12px}
+.est-out span{display:block;font-family:var(--font-head);font-weight:800;font-size:1.5rem;color:var(--orange-deep)}
+.est-out small{font-size:.78rem;font-weight:600;color:var(--muted)}
+.fine{font-size:.75rem;color:var(--muted);margin-top:12px}
+
+/* ---------- CTA BANNER ---------- */
+.cta-banner{background:var(--orange-soft);border:1px solid #F5D7AE;border-radius:24px;padding:54px 58px;display:flex;justify-content:space-between;align-items:center;gap:44px;position:relative;overflow:hidden}
+.cta-arc{position:absolute;right:-28px;top:-28px;width:210px;opacity:.55}
+.cta-copy{position:relative;max-width:560px}
+.cta-copy h2{margin:12px 0 10px}
+.cta-actions{position:relative;display:flex;gap:14px;flex-wrap:wrap}
+
+/* ---------- CONTACT ---------- */
+.contact-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:52px;align-items:start}
+.c-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.c-card{display:flex;gap:14px;align-items:flex-start;padding:20px;border:1px solid var(--line);border-radius:16px;background:#fff;transition:transform .25s,box-shadow .25s}
+.c-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-sm)}
+.c-ic{width:44px;height:44px;flex:none;border-radius:12px;background:var(--orange-soft);color:var(--orange-deep);display:grid;place-items:center}
+.c-ic svg{width:20px;height:20px}
+.c-card h4{font-size:.95rem;margin-bottom:3px}
+.c-card p,.c-card a{font-size:.86rem;color:var(--body);text-decoration:none;font-weight:500}
+.c-card a:hover{color:var(--orange-deep)}
+.map-wrap{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm);background:#fff}
+.map-wrap iframe{display:block;width:100%;height:300px;border:0}
+.map-note{display:flex;align-items:center;gap:8px;font-size:.83rem;color:var(--muted);margin-top:12px;font-weight:500}
+.map-note svg{width:15px;height:15px;color:var(--orange-deep)}
+
+/* ---------- PAGE ROUTER ---------- */
+.page{display:none}
+.page.active{display:block}
+
+/* ---------- FEATURE ROWS ---------- */
+.feature-row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:72px}
+.feature-row:last-child{margin-bottom:0}
+.feature-row.reverse .fr-media{order:2}
+.fr-media img{border-radius:22px;aspect-ratio:16/11;object-fit:cover;width:100%;box-shadow:var(--shadow-md)}
+.fr-body h3{font-size:1.6rem;margin:12px 0 10px}
+.fr-body>p{margin-bottom:6px}
+.price-chip{display:inline-block;background:var(--orange-soft);color:var(--orange-deep);font-family:var(--font-head);font-weight:800;padding:9px 18px;border-radius:999px;margin-top:22px;font-size:.95rem}
+
+/* ---------- FOOTER ---------- */
+.site-footer{background:var(--cream);border-top:1px solid var(--line);margin-top:0}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.25fr;gap:48px;padding:72px 0 52px}
+.f-logo-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 18px;display:inline-block;margin-bottom:18px}
+.f-logo{height:38px;width:auto}
+.f-brand p{font-size:.9rem;max-width:34ch;margin-bottom:20px}
+.socials{display:flex;gap:10px}
+.socials a{width:40px;height:40px;border-radius:50%;border:1px solid var(--line-2);background:#fff;display:grid;place-items:center;color:var(--navy-2);transition:.25s}
+.socials a:hover{background:var(--orange);border-color:var(--orange);color:#1F2F40;transform:translateY(-3px)}
+.socials svg{width:17px;height:17px}
+.f-col h4{font-size:.95rem;margin-bottom:18px}
+.f-col ul{display:grid;gap:11px}
+.f-col a,.f-col li span{font-size:.9rem;color:var(--body);text-decoration:none;display:inline-flex;align-items:center;gap:9px}
+.f-col a:hover{color:var(--orange-deep)}
+.f-col svg{width:15px;height:15px;color:var(--orange-deep);flex:none}
+.f-bottom{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:22px 0;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+.f-legal{display:flex;gap:22px}
+.f-legal a{text-decoration:none;color:var(--muted);font-weight:600}
+.f-legal a:hover{color:var(--orange-deep)}
+
+/* ---------- MODALS / MISC ---------- */
+.modal{position:fixed;inset:0;z-index:200;background:rgba(36,56,76,.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.modal.open{opacity:1;visibility:visible}
+.modal-card{background:#fff;border-radius:22px;width:100%;max-width:580px;max-height:92vh;overflow:auto;padding:36px;transform:translateY(18px) scale(.98);transition:transform .3s}
+.modal.open .modal-card{transform:none}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:20px}
+.modal-head h3{font-size:1.35rem}
+.modal-head p{font-size:.87rem;color:var(--muted);margin-top:5px}
+.modal-x{width:40px;height:40px;flex:none;border-radius:50%;border:1px solid var(--line-2);background:#fff;display:grid;place-items:center;color:var(--navy);transition:.25s}
+.modal-x:hover{border-color:var(--orange);color:var(--orange-deep)}
+.modal-x svg{width:17px;height:17px}
+.info-body p{font-size:.93rem;margin-bottom:14px}
+.to-top{position:fixed;right:24px;bottom:24px;z-index:90;width:48px;height:48px;border-radius:50%;border:1px solid var(--line-2);background:#fff;color:var(--navy);display:grid;place-items:center;box-shadow:var(--shadow-md);opacity:0;pointer-events:none;transform:translateY(10px);transition:.3s}
+.to-top.show{opacity:1;pointer-events:auto;transform:none}
+.to-top:hover{color:var(--orange-deep);border-color:var(--orange)}
+.to-top svg{width:20px;height:20px}
+.cert-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.cert-row li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 20px;font-family:var(--font-head);font-weight:700;font-size:.82rem;color:var(--navy-2);display:inline-flex;gap:8px;align-items:center}
+.cert-row svg{width:15px;height:15px;color:var(--orange-deep)}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1080px){
+  .header-cta{display:none}
+  .nav-cta{display:inline-flex;margin-top:8px}
+  .nav-toggle{display:flex}
+  .main-nav{position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);box-shadow:var(--shadow-lg);flex-direction:column;align-items:flex-start;gap:4px;padding:18px 24px 26px;display:none}
+  .site-header.menu-open .main-nav{display:flex;animation:slideDown .25s ease}
+  .main-nav .nav-link{width:100%;padding:13px 4px;font-size:1.05rem}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+}
+@media (max-width:960px){
+  .section{padding:68px 0}
+  .grid-4,.hiw-grid{grid-template-columns:1fr 1fr}
+  .hiw-step::after{display:none}
+  .grid-3,.rv-grid,.gallery{grid-template-columns:1fr 1fr}
+  .split,.quote-grid,.contact-grid,.feat-story{grid-template-columns:1fr;gap:44px}
+  .feature-row{grid-template-columns:1fr;gap:28px;margin-bottom:56px}
+  .feature-row.reverse .fr-media{order:0}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+  .stats-card,.stats-row{grid-template-columns:1fr 1fr;row-gap:28px}
+  .stat{border-right:0!important}
+  .rating-band{grid-template-columns:1fr 1fr}
+  .float-card{right:10px;bottom:-20px}
+  .faq-grid{grid-template-columns:1fr;gap:36px}
+  .cta-banner{flex-direction:column;align-items:flex-start;padding:44px 36px}
+  .tb-left{display:none}
+  .topbar-in{justify-content:center}
+}
+@media (max-width:640px){
+  .container{width:min(1180px,100% - 40px)}
+  .grid-2,.grid-3,.grid-4,.rv-grid,.gallery,.c-cards{grid-template-columns:1fr}
+  .hiw-grid{grid-template-columns:1fr}
+  .t-viewport .review-card{flex:0 0 100%}
+  .form-grid{grid-template-columns:1fr}
+  .form-card{padding:26px 22px}
+  .hero-overlay{background:linear-gradient(180deg,rgba(251,248,241,.95),rgba(251,248,241,.88))}
+  .hero-in{padding:64px 0 96px;min-height:0}
+  .page-hero-in{padding:72px 0 60px}
+  .hero-cta .btn{width:100%}
+  .sec-head.split{flex-direction:column;align-items:flex-start}
+  .est-out{flex-direction:column;gap:14px}
+  .footer-grid{grid-template-columns:1fr}
+  .f-bottom{justify-content:center;text-align:center}
+  .tb-right{gap:14px;flex-wrap:wrap;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  [data-reveal]{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Reusable brand dot-arc (from logo) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="dotArc">
+      <circle cx="52" cy="14" r="4" fill="#F7941E"/><circle cx="40" cy="17" r="5" fill="#FCA83F"/>
+      <circle cx="29" cy="24" r="6" fill="#F7941E"/><circle cx="22" cy="35" r="7" fill="#FCA83F"/>
+      <circle cx="19" cy="50" r="7.5" fill="#F7941E"/><circle cx="22" cy="65" r="7" fill="#FCA83F"/>
+      <circle cx="29" cy="76" r="6" fill="#F7941E"/><circle cx="40" cy="83" r="5" fill="#FCA83F"/>
+      <circle cx="52" cy="86" r="4" fill="#F7941E"/><circle cx="66" cy="12" r="2.5" fill="#FCA83F"/>
+      <circle cx="64" cy="88" r="2.5" fill="#FCA83F"/><circle cx="11" cy="30" r="2" fill="#FBC98F"/>
+      <circle cx="11" cy="70" r="2" fill="#FBC98F"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- ================= TOP BAR ================= -->
+<div class="topbar">
+  <div class="container topbar-in">
+    <span class="tb-left" style="display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--navy-2)"><i data-lucide="map-pin"></i> Proudly NZ-owned · Serving 19 regions nationwide</span>
+    <span class="tb-right">
+      <a href="tel:0800765276"><i data-lucide="phone"></i> 0800 765 276</a>
+      <a href="mailto:hello@thesolarco.nz"><i data-lucide="mail"></i> hello@thesolarco.nz</a>
+    </span>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header" id="siteHeader">
+  <div class="container header-in">
+    <a href="#home" class="brand" aria-label="The Solar Co — home">
+      <img src="https://i.ibb.co.com/1f7JyQHJ/EXAMPLE-BRAND-removebg-preview.png" alt="The Solar Co logo" class="brand-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'">
+      <span class="logo-fallback">THE SOLAR <b>Co</b></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary navigation">
+      <a href="#home" data-nav="home" class="nav-link">Home</a>
+      <a href="#about" data-nav="about" class="nav-link">About Us</a>
+      <a href="#services" data-nav="services" class="nav-link">Services</a>
+      <a href="#testimonials" data-nav="testimonials" class="nav-link">Testimonials</a>
+      <a href="#contact" data-nav="contact" class="nav-link">Contact</a>
+      <button class="btn btn-primary btn-sm nav-cta" data-quote>Get a Quote</button>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-primary btn-sm header-cta" data-quote>Get a Quote</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ================================================= HOME ================================================= -->
+<section class="page active" id="page-home">
+
+  <!-- HERO -->
+  <div class="hero">
+    <img class="hero-bg" src="https://www.myswitchelectric.com/wp-content/uploads/2023/03/solar-house.jpg?q=80&w=2200&auto=format&fit=crop" alt="New Zealand home with solar panels glowing in the evening sun" fetchpriority="high">
+    <div class="hero-overlay"></div>
+    <div class="container hero-in">
+      <div class="hero-content" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Proudly New Zealand owned &amp; operated</span>
+        <h1>Your roof could be paying your <span class="hl">power bill.</span></h1>
+        <p class="lead">Premium solar and battery systems designed for NZ homes and businesses — installed by local experts, backed by 25-year warranties.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" data-quote>Request a Free Quote <i data-lucide="arrow-right"></i></button>
+          <a href="#how-it-works" class="btn btn-ghost" data-scroll="how-it-works" data-page="home">How Solar Works <i data-lucide="chevron-down"></i></a>
+        </div>
+        <ul class="hero-trust">
+          <li><i data-lucide="badge-check"></i> 2,500+ systems installed</li>
+          <li><i data-lucide="star"></i> 4.9★ from 600+ reviews</li>
+          <li><i data-lucide="shield-check"></i> Warranties honoured in NZ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="container">
+    <div class="stats-card" data-reveal>
+      <div class="stat"><span class="stat-num" data-count="2500" data-suffix="+">0</span><span class="stat-label">Systems installed</span></div>
+      <div class="stat"><span class="stat-num" data-count="14" data-suffix="+">0</span><span class="stat-label">Years serving NZ</span></div>
+      <div class="stat"><span class="stat-num" data-count="4.9" data-decimals="1">0</span><span class="stat-label">Average customer rating</span></div>
+      <div class="stat"><span class="stat-num" data-count="25" data-suffix="yr">0</span><span class="stat-label">Panel performance warranty</span></div>
+    </div>
+  </div>
+
+  <!-- BENEFITS -->
+  <section class="section sec-cream" style="margin-top:72px">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> The benefits</span>
+        <h2>Why Kiwis are going solar</h2>
+        <p class="lead">Four very good reasons — and every one shows up in your bank account, or your community.</p>
+      </div>
+      <div class="grid-4">
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="piggy-bank"></i></div>
+          <h3>Slash your power bills</h3>
+          <p>Offset up to 60% of household electricity from day one — and rise above every price hike.</p>
+        </article>
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="battery-charging"></i></div>
+          <h3>Energy independence</h3>
+          <p>Pair panels with a battery and keep the lights on through outages and evening peaks.</p>
+        </article>
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="trending-up"></i></div>
+          <h3>Boost property value</h3>
+          <p>A quality solar system makes your home cheaper to run — and far more attractive to buyers.</p>
+        </article>
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="leaf"></i></div>
+          <h3>Cleaner New Zealand</h3>
+          <p>The average home system offsets 2.5 tonnes of CO₂ a year — like planting 110 native trees.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW SOLAR WORKS -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Simple process</span>
+        <h2>How solar works</h2>
+        <p class="lead">From sunshine to savings in four easy steps.</p>
+      </div>
+      <div class="hiw-grid">
+        <div class="hiw-step" data-reveal>
+          <div class="hiw-icon"><i data-lucide="sun"></i></div>
+          <span class="step-tag">Step 1</span>
+          <h3>Sun hits your panels</h3>
+          <p>High-efficiency panels capture sunlight — even on cloudy days.</p>
+        </div>
+        <div class="hiw-step" data-reveal>
+          <div class="hiw-icon"><i data-lucide="zap"></i></div>
+          <span class="step-tag">Step 2</span>
+          <h3>Inverter converts it</h3>
+          <p>A smart inverter turns DC power into clean AC electricity.</p>
+        </div>
+        <div class="hiw-step" data-reveal>
+          <div class="hiw-icon"><i data-lucide="home"></i></div>
+          <span class="step-tag">Step 3</span>
+          <h3>Your home runs on solar</h3>
+          <p>Appliances draw free solar power first, before touching the grid.</p>
+        </div>
+        <div class="hiw-step" data-reveal>
+          <div class="hiw-icon"><i data-lucide="battery-charging"></i></div>
+          <span class="step-tag">Step 4</span>
+          <h3>Store or sell the rest</h3>
+          <p>Extra energy charges your battery or exports to the grid for credit.</p>
+        </div>
+      </div>
+      <p class="hiw-note" data-reveal>Most installations are complete in just <strong>1–2 days</strong>. &nbsp;<a href="#install-steps" class="text-link" data-scroll="install-steps" data-page="home">See the installation process <i data-lucide="arrow-right"></i></a></p>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS -->
+  <section class="section sec-mist">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Solutions</span>
+        <h2>Solar for every NZ property</h2>
+        <p class="lead">From family homes to commercial rooftops — one local team, one fixed quote.</p>
+      </div>
+      <div class="grid-2">
+        <article class="sol-card" data-reveal>
+          <div class="sol-img">
+            <img src="https://enterprise-service-eu-cdn.ecoflow.com/configurable/images/1779261176875/KV-%E8%BF%91%E6%99%AF%20(1).jpg?q=80&w=1200&auto=format&fit=crop" alt="New Zealand family home with solar potential" loading="lazy">
+            <span class="sol-tag">Residential</span>
+          </div>
+          <div class="sol-body">
+            <h3>Solar for your home</h3>
+            <p>Systems from 3kW to 15kW+ — sleek, silent, and tailored to your roof, your usage and your future plans.</p>
+            <ul class="chips"><li>From $79/week</li><li>1–2 day install</li><li>EV &amp; battery ready</li></ul>
+            <div style="margin-top:20px"><a href="#services" class="text-link">Explore home systems <i data-lucide="arrow-right"></i></a></div>
+          </div>
+        </article>
+        <article class="sol-card" data-reveal>
+          <div class="sol-img">
+            <img src="https://solardynamics.energy/wp-content/uploads/2023/08/commercial-1-1024x683.png?q=80&w=1200&auto=format&fit=crop" alt="Commercial building suited to solar" loading="lazy">
+            <span class="sol-tag">Commercial</span>
+          </div>
+          <div class="sol-body">
+            <h3>Solar for your business</h3>
+            <p>Cut overheads across warehouses, farms, retail and schools — with payback typically inside 4–6 years.</p>
+            <ul class="chips"><li>25kW – 1MW+</li><li>Zero-capex options</li><li>Dedicated project manager</li></ul>
+            <div style="margin-top:20px"><a href="#services" class="text-link">Explore commercial solar <i data-lucide="arrow-right"></i></a></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- BATTERY -->
+  <section class="section">
+    <div class="container split">
+      <div class="split-media" data-reveal>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDKE9uNO6dfH2MffFMyK_sH6NsGHQzBUfgGMnxiFjVCKsj8xFLJt90qYM&s=10?q=80&w=1400&auto=format&fit=crop" alt="The Solar Co installer carrying a solar panel on a New Zealand roof" loading="lazy">
+        <div class="float-card"><span class="fc-num">86%</span><span class="fc-text">of our battery customers cover their evening usage entirely</span></div>
+      </div>
+      <div data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Battery storage</span>
+        <h2 style="margin:14px 0 14px">Don't just make energy. <span class="hl">Keep it.</span></h2>
+        <p>A solar battery stores the day's sunshine for evenings, peak rates and outages — squeezing up to 90% of your power from your own roof.</p>
+        <ul class="ticks">
+          <li><span class="tick"><i data-lucide="check"></i></span> Use your own solar after sundown</li>
+          <li><span class="tick"><i data-lucide="check"></i></span> Blackout protection for your home or business</li>
+          <li><span class="tick"><i data-lucide="check"></i></span> Cut grid dependence by up to 90%</li>
+          <li><span class="tick"><i data-lucide="check"></i></span> Works with existing solar systems too</li>
+        </ul>
+        <button class="btn btn-primary" data-quote data-service="Battery Storage">Ask About Batteries <i data-lucide="arrow-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALLATION STEPS -->
+  <section class="section sec-mist" id="install-steps">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Installation</span>
+        <h2>From first call to switch-on</h2>
+        <p class="lead">A clear, fixed process — with real people keeping you updated at every step.</p>
+      </div>
+      <div class="grid-4">
+        <article class="step-card" data-reveal>
+          <div class="step-top"><span class="step-num">01</span><div class="icon-badge"><i data-lucide="phone-call"></i></div></div>
+          <h3>Consult</h3>
+          <p>Free chat, roof check and power-bill review — onsite or by video call.</p>
+        </article>
+        <article class="step-card" data-reveal>
+          <div class="step-top"><span class="step-num">02</span><div class="icon-badge"><i data-lucide="pencil-ruler"></i></div></div>
+          <h3>Design &amp; quote</h3>
+          <p>Custom system design with a fixed, itemised quote within 48 hours.</p>
+        </article>
+        <article class="step-card" data-reveal>
+          <div class="step-top"><span class="step-num">03</span><div class="icon-badge"><i data-lucide="wrench"></i></div></div>
+          <h3>Install</h3>
+          <p>Certified in-house electricians. Most homes are live on solar in 1–2 days.</p>
+        </article>
+        <article class="step-card" data-reveal>
+          <div class="step-top"><span class="step-num">04</span><div class="icon-badge"><i data-lucide="shield-check"></i></div></div>
+          <h3>Support</h3>
+          <p>Monitoring setup, warranty care and annual health checks for life.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS CAROUSEL -->
+  <section class="section sec-cream">
+    <div class="container">
+      <div class="sec-head split" data-reveal>
+        <div>
+          <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Customer stories</span>
+          <h2>What Kiwis say</h2>
+        </div>
+        <div class="car-nav">
+          <button class="car-btn" id="tPrev" aria-label="Previous reviews"><i data-lucide="chevron-left"></i></button>
+          <button class="car-btn" id="tNext" aria-label="Next reviews"><i data-lucide="chevron-right"></i></button>
+        </div>
+      </div>
+      <div class="t-viewport" id="tCarousel" data-reveal>
+        <article class="review-card">
+          <svg class="quote-ic" aria-hidden="true"><use href="#dotArc" opacity="0"/></svg><div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Our power bill dropped from $245 to under $60 a month. The install was tidy and fast, and the team explained everything in plain English."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Bennett" loading="lazy"><div><div class="rv-name">Sarah &amp; Tom Bennett</div><div class="rv-meta">Tauranga · 6.6kW + Battery</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Quotes were clear with zero pressure. The system hit its projected output in year one — our warehouse running costs are visibly lower."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="David Chen" loading="lazy"><div><div class="rv-name">David Chen</div><div class="rv-meta">Auckland · Commercial 32kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"When the winter outages hit, our lights stayed on while the street went dark. Best home investment we've ever made."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Megan Fraser" loading="lazy"><div><div class="rv-name">Megan Fraser</div><div class="rv-meta">Christchurch · 5kW + Battery</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"From first phone call to switch-on in three weeks. A genuine local crew who turn up when they say they will."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Wiremu Ngata" loading="lazy"><div><div class="rv-name">Wiremu Ngata</div><div class="rv-meta">Napier · 9.8kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Three quotes later, The Solar Co was the only company that designed around our roof — not around a sales target."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Priya Sharma" loading="lazy"><div><div class="rv-name">Priya Sharma</div><div class="rv-meta">Hamilton · 5kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Even through an Otago winter we're exporting power back to the grid. The monitoring app is honestly addictive."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Graeme Mitchell" loading="lazy"><div><div class="rv-name">Graeme &amp; Lois Mitchell</div><div class="rv-meta">Dunedin · 4kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+      </div>
+      <div class="t-foot">
+        <div class="dots" id="tDots" aria-label="Review pages"></div>
+        <a href="#testimonials" class="text-link">Read all reviews <i data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container faq-grid">
+      <div class="faq-intro" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Good to know</span>
+        <h2 style="margin:14px 0 12px">Solar questions, answered</h2>
+        <p>The honest answers we give on every doorstep — no jargon, no spin.</p>
+        <div class="faq-help">
+          <h4>Still curious?</h4>
+          <p>Our team genuinely loves talking solar — no pressure, promise.</p>
+          <a href="tel:0800765276" class="btn btn-ghost btn-sm"><i data-lucide="phone"></i> 0800 765 276</a>
+        </div>
+      </div>
+      <div class="faq-list" data-reveal>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">How much does a solar system cost in New Zealand? <i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="faq-a"><p>Most family homes invest $8,000–$14,000 installed for a quality 3–5kW system. Pricing depends on roof type, system size and whether you add a battery. Every quote we give is fixed — the price we say is the price you pay.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Will solar still work on cloudy days? <i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="faq-a"><p>Yes. Modern panels generate 25–60% of their rated output under cloud — and New Zealand's UV levels are among the highest in the world, even when it's overcast.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">How long does installation take? <i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="faq-a"><p>Most homes are designed, consented and switched on within 3–4 weeks. The physical installation itself usually takes just 1–2 days with our in-house electricians.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">What warranties do I get? <i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="faq-a"><p>25-year panel performance, 10–12 year inverter, 10-year battery and a 10-year workmanship warranty — all honoured right here in New Zealand.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Do I need a battery? <i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="faq-a"><p>Not necessarily. Panels alone slash daytime power bills; a battery stores excess energy for evenings and outages. We model both options so you can decide with real numbers.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Do you offer payment plans? <i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="faq-a"><p>Yes — solar from $79/week with flexible finance, and we'll help you access NZ green loans. Many customers find repayments are lower than the power bill they replace.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE CTA + FORM -->
+  <section class="section" id="quote" style="background:var(--orange-soft)">
+    <div class="container quote-grid">
+      <div data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Free quote</span>
+        <h2 style="margin:14px 0 14px">Ready to see <span class="hl">your numbers?</span></h2>
+        <p class="lead">Tailored to your roof, your usage and your region — with zero obligation.</p>
+        <ul class="ticks">
+          <li><span class="tick"><i data-lucide="check"></i></span> We call within 2 working hours</li>
+          <li><span class="tick"><i data-lucide="check"></i></span> Free roof &amp; usage assessment</li>
+          <li><span class="tick"><i data-lucide="check"></i></span> Fixed quote within 48 hours</li>
+        </ul>
+        <div class="estimator">
+          <div class="est-head"><i data-lucide="calculator"></i> Estimate your savings</div>
+          <label for="billRange">Monthly power bill: <strong id="billVal">$220</strong></label>
+          <input type="range" id="billRange" min="120" max="500" step="10" value="220">
+          <div class="est-out">
+            <div><span id="saveYear">$0</span><small>saved per year*</small></div>
+            <div><span id="save10">$0</span><small>over 10 years*</small></div>
+          </div>
+          <p class="fine">*Estimated at 55% of power offset by self-consumed solar. Your free assessment gives exact numbers.</p>
+        </div>
+      </div>
+      <div class="form-card" data-reveal>
+        <h3>Request your free quote</h3>
+        <p class="form-sub">Takes 60 seconds — no obligation, no pushy sales.</p>
+        <form class="js-quote-form" id="homeQuoteForm" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="h-name">Full name <span class="req">*</span></label>
+              <input id="h-name" name="name" type="text" placeholder="Jane Cooper" autocomplete="name" required>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="h-email">Email <span class="req">*</span></label>
+              <input id="h-email" name="email" type="email" placeholder="jane@email.co.nz" autocomplete="email" required>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="h-phone">Phone <span class="req">*</span></label>
+              <input id="h-phone" name="phone" type="tel" placeholder="021 555 123" autocomplete="tel" required>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="h-ptype">Property type <span class="req">*</span></label>
+              <select id="h-ptype" name="ptype" required>
+                <option value="" disabled selected>Choose one…</option>
+                <option>Own my home</option>
+                <option>Business / commercial</option>
+                <option>Farm or lifestyle</option>
+                <option>Rental property</option>
+                <option>Other</option>
+              </select>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field full">
+              <label for="h-location">Location <span class="req">*</span></label>
+              <input id="h-location" name="location" type="text" placeholder="Town or city, e.g. Hamilton" autocomplete="address-level2" required>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field full">
+              <label for="h-message">Message</label>
+              <textarea id="h-message" name="message" placeholder="Roof type, current power bill, anything else we should know… (optional)"></textarea>
+              <span class="field-error" role="alert"></span>
+            </div>
+          </div>
+          <div style="margin-top:20px"><button type="submit" class="btn btn-primary" style="width:100%">Send My Request <i data-lucide="arrow-right"></i></button></div>
+          <p class="form-micro"><i data-lucide="lock"></i> Your details stay private. No spam, ever.</p>
+        </form>
+        <div class="form-success" id="homeQuoteSuccess" hidden>
+          <div class="success-ic"><i data-lucide="check"></i></div>
+          <h3>Thanks, <span class="s-name">there</span>!</h3>
+          <p>Your request is in. A real Kiwi from our team will call you within one working day.</p>
+          <button type="button" class="btn btn-ghost btn-sm js-again">Send another enquiry</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================= ABOUT ================================================= -->
+<section class="page" id="page-about">
+  <div class="page-hero">
+    <img class="hero-bg" src="https://images.unsplash.com/photo-1507699622108-4be3abd695ad?q=80&w=2200&auto=format&fit=crop" alt="Lake and mountains near Queenstown, New Zealand" loading="lazy">
+    <div class="hero-overlay"></div>
+    <div class="container page-hero-in" data-reveal>
+      <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> About us</span>
+      <h1>Kiwi owned. <span class="hl">Solar obsessed.</span></h1>
+      <p class="lead">Since 2011, we've helped thousands of New Zealanders take the power back from their power bills.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container split">
+      <div class="split-media revealed" data-reveal="">
+        <img style="height: 350px;" src="https://i.ibb.co.com/dRdhwX6/image1.png?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="The Solar Co team collaborating on a project" loading="lazy">
+        <div class="float-card"><span class="fc-num">2011</span><span class="fc-text">Est. Auckland — still proudly NZ-owned</span></div>
+      </div>
+  <!--     <div class="split-media" data-reveal>
+        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1400&auto=format&fit=crop" alt="The Solar Co team collaborating on a project" loading="lazy"> 
+        <div class="float-card"><span class="fc-num">2011</span><span class="fc-text">Est. Auckland — still proudly NZ-owned</span></div>
+      </div>-->
+      <div data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Our story</span>
+        <h2 style="margin:14px 0 16px">Started in a Kiwi garage. Powered by sunshine.</h2>
+        <p>The Solar Co began with two electricians, a ute and a simple belief: New Zealanders deserve honest advice and world-class solar — without the hard sell.</p>
+        <p style="margin-top:14px">Fourteen years on, we're 40+ local experts installing nationwide, with our own in-house crews (never subcontractors) and aftercare that actually answers the phone.</p>
+        <ul class="chips" style="margin-top:26px">
+          <li>NZ-owned &amp; operated</li><li>40+ local experts</li><li>In-house electricians</li><li>No subcontractors</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sec-cream">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> What we stand for</span>
+        <h2>Values you can hold us to</h2>
+      </div>
+      <div class="grid-4">
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="award"></i></div>
+          <h3>Craftsmanship first</h3>
+          <p>Tidy wiring, honest advice, and installs we'd proudly put on our own homes.</p>
+        </article>
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="badge-check"></i></div>
+          <h3>Straight-up honesty</h3>
+          <p>Fixed quotes and realistic yield estimates. If solar isn't right for you, we'll say so.</p>
+        </article>
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="hard-hat"></i></div>
+          <h3>Safety, always</h3>
+          <p>Certified electricians, audited site processes and $20M public liability cover.</p>
+        </article>
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="leaf"></i></div>
+          <h3>Care for Aotearoa</h3>
+          <p>We recycle panels, offset our fleet — and plant a native tree for every install.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="stats-row" data-reveal>
+        <div class="stat"><span class="stat-num" data-count="2500" data-suffix="+">0</span><span class="stat-label">Systems installed</span></div>
+        <div class="stat"><span class="stat-num" data-count="40" data-suffix="+">0</span><span class="stat-label">Local team members</span></div>
+        <div class="stat"><span class="stat-num" data-count="19">0</span><span class="stat-label">Regions served</span></div>
+        <div class="stat"><span class="stat-num" data-count="98" data-suffix="%">0</span><span class="stat-label">Would recommend us</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:24px">
+    <div class="container split">
+      <div data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Why Kiwis trust us</span>
+        <h2 style="margin:14px 0 8px">Reliability is our religion</h2>
+        <ul class="ticks">
+          <li><span class="tick"><i data-lucide="check"></i></span> Local crews based in every region we serve</li>
+          <li><span class="tick"><i data-lucide="check"></i></span> Fixed-price quotes — no surprise variations</li>
+          <li><span class="tick"><i data-lucide="check"></i></span> 25-year warranties honoured in NZ, no offshore runaround</li>
+          <li><span class="tick"><i data-lucide="check"></i></span> Ongoing monitoring, support &amp; annual health checks</li>
+        </ul>
+        <button class="btn btn-primary" data-quote>Meet Your Local Team <i data-lucide="arrow-right"></i></button>
+      </div>
+      <div class="split-media" data-reveal>
+        <img src="https://www.applus.com/dam/jcr:ab2041f7-15e1-4bd2-a0eb-446686418d88/solar%20design%20engineering.jpg?q=80&w=1400&auto=format&fit=crop" alt="Solar engineer reviewing a system design" loading="lazy">
+        <div class="float-card"><span class="fc-num">4.9★</span><span class="fc-text">average rating across 600+ verified reviews</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sec-mist">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Certified &amp; accountable</span>
+        <h2>Accredited, audited, insured</h2>
+      </div>
+      <ul class="cert-row" data-reveal>
+        <li><i data-lucide="badge-check"></i> Master Electricians NZ</li>
+        <li><i data-lucide="badge-check"></i> SEANZ Member</li>
+        <li><i data-lucide="badge-check"></i> IEC 62446 Certified Installs</li>
+        <li><i data-lucide="badge-check"></i> EECA Programme Partner</li>
+        <li><i data-lucide="badge-check"></i> $20M Public Liability Insured</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner" data-reveal>
+        <svg class="cta-arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg>
+        <div class="cta-copy">
+          <span class="eyebrow">Get started</span>
+          <h2>Ready to meet your local solar team?</h2>
+          <p>Free assessment · Fixed quote · Real people — most quotes delivered within 48 hours.</p>
+        </div>
+        <div class="cta-actions">
+          <button class="btn btn-primary" data-quote>Request a Free Quote <i data-lucide="arrow-right"></i></button>
+          <a class="btn btn-ghost" href="tel:0800765276"><i data-lucide="phone"></i> 0800 765 276</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================= SERVICES ================================================= -->
+<section class="page" id="page-services">
+  <div class="page-hero">
+    <img class="hero-bg" src="https://i.ibb.co.com/jkX3GF9S/Screenshot-1.png?q=80&w=2200&auto=format&fit=crop" alt="Solar panels on a rooftop catching bright sunlight" loading="lazy">
+    <div class="hero-overlay"></div>
+    <div class="container page-hero-in" data-reveal>
+      <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Our services</span>
+      <h1>Everything solar. <span class="hl">Under one roof.</span></h1>
+      <p class="lead">From first assessment to 25-year aftercare — one local team handles it all.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> What we do</span>
+        <h2>Eight services, zero guesswork</h2>
+        <p class="lead">Click any service to start the conversation — we'll tailor it to your property.</p>
+      </div>
+      <div class="grid-4">
+        <article class="srv-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="sun-medium"></i></div>
+          <h3>Solar Panel Systems</h3>
+          <p>Tier-1 high-efficiency panels sized to your roof and usage — from 3kW homes to 100kW+ commercial.</p>
+          <button class="text-link" data-quote data-service="Solar Panel Systems">Get a quote <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="srv-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="battery-charging"></i></div>
+          <h3>Battery Storage</h3>
+          <p>Store daytime solar for evenings and outages with leading home batteries — new or retrofitted.</p>
+          <button class="text-link" data-quote data-service="Battery Storage">Get a quote <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="srv-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="message-circle"></i></div>
+          <h3>Solar Consultation</h3>
+          <p>A free, no-pressure chat about costs, savings and payback for your specific property.</p>
+          <button class="text-link" data-quote data-service="Solar Consultation">Book a chat <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="srv-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="clipboard-check"></i></div>
+          <h3>Roof &amp; Energy Assessment</h3>
+          <p>We analyse your roof, shading and power usage to model real-world yield before you commit.</p>
+          <button class="text-link" data-quote data-service="Roof & Energy Assessment">Get a quote <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="srv-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="pencil-ruler"></i></div>
+          <h3>System Design</h3>
+          <p>Custom layout, yield simulation and EV / battery-ready planning — engineered for NZ conditions.</p>
+          <button class="text-link" data-quote data-service="System Design">Get a quote <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="srv-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="wrench"></i></div>
+          <h3>Installation</h3>
+          <p>Certified in-house electricians complete most installs in 1–2 days, to audited safety standards.</p>
+          <button class="text-link" data-quote data-service="Installation">Get a quote <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="srv-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="activity"></i></div>
+          <h3>Monitoring &amp; App</h3>
+          <p>Track generation, usage and savings in real time, from anywhere in the world.</p>
+          <button class="text-link" data-quote data-service="Monitoring & App">Get a quote <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="srv-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="heart-handshake"></i></div>
+          <h3>Aftercare &amp; Maintenance</h3>
+          <p>Panel cleaning, health checks and warranty support for the life of your system.</p>
+          <button class="text-link" data-quote data-service="Aftercare & Maintenance">Get a quote <i data-lucide="arrow-right"></i></button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sec-cream">
+    <div class="container">
+      <div class="feature-row" data-reveal>
+        <div class="fr-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlw3GxEUqj0k33E34RHIvTIgPZJqcB8U7EmpNz4YUyCTBgHCFG18FPaKs&s=10?q=80&w=1400&auto=format&fit=crop" alt="New Zealand home suited to a residential solar system" loading="lazy"></div>
+        <div class="fr-body">
+          <span class="eyebrow">Residential</span>
+          <h3>Home solar, done properly</h3>
+          <p>Designed around your household's rhythm — school runs, heat pumps, EVs and all.</p>
+          <ul class="ticks">
+            <li><span class="tick"><i data-lucide="check"></i></span> Tier-1 panels with 25-year performance warranty</li>
+            <li><span class="tick"><i data-lucide="check"></i></span> Sleek all-black or silver options</li>
+            <li><span class="tick"><i data-lucide="check"></i></span> Battery &amp; EV-charger ready from day one</li>
+            <li><span class="tick"><i data-lucide="check"></i></span> Installed in 1–2 days by our own crews</li>
+          </ul>
+          <span class="price-chip">Home systems from $8,900 or $79/week</span>
+          <div style="margin-top:22px"><button class="btn btn-primary" data-quote data-service="Residential Solar">Get a Home Quote <i data-lucide="arrow-right"></i></button></div>
+        </div>
+      </div>
+      <div class="feature-row reverse" data-reveal>
+        <div class="fr-media"><img src="https://www.facilitiesnet.com/resources/editorial/2024/facility_shutterstock_2108230025.jpg?q=80&w=1400&auto=format&fit=crop" alt="Commercial building with large rooftop solar potential" loading="lazy"></div>
+        <div class="fr-body">
+          <span class="eyebrow">Commercial</span>
+          <h3>Solar that pays for itself</h3>
+          <p>Turn unused roof space into a predictable, decades-long reduction in operating costs.</p>
+          <ul class="ticks">
+            <li><span class="tick"><i data-lucide="check"></i></span> 25kW–1MW systems for warehouses, farms &amp; schools</li>
+            <li><span class="tick"><i data-lucide="check"></i></span> Payback typically inside 4–6 years</li>
+            <li><span class="tick"><i data-lucide="check"></i></span> Zero-capex options available</li>
+            <li><span class="tick"><i data-lucide="check"></i></span> Dedicated project manager &amp; reporting</li>
+          </ul>
+          <span class="price-chip">Free commercial feasibility study</span>
+          <div style="margin-top:22px"><button class="btn btn-primary" data-quote data-service="Commercial Solar">Talk to Our Team <i data-lucide="arrow-right"></i></button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Our promise</span>
+        <h2>Three guarantees on every job</h2>
+      </div>
+      <div class="grid-3">
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="badge-check"></i></div>
+          <h3>Fixed-price promise</h3>
+          <p>The number on your quote is the number on your invoice. Valid for 30 days.</p>
+        </article>
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="activity"></i></div>
+          <h3>Performance guarantee</h3>
+          <p>We model your yield before you sign — and we stand behind the number.</p>
+        </article>
+        <article class="benefit-card" data-reveal>
+          <div class="icon-badge"><i data-lucide="heart-handshake"></i></div>
+          <h3>Lifetime workmanship support</h3>
+          <p>One call to 0800 SOLARNZ reaches the people who installed your system.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="cta-banner" data-reveal>
+        <svg class="cta-arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg>
+        <div class="cta-copy">
+          <span class="eyebrow">Get started</span>
+          <h2>Not sure which system fits?</h2>
+          <p>Send us your address and power bill — we'll model your options for free.</p>
+        </div>
+        <div class="cta-actions">
+          <button class="btn btn-primary" data-quote>Request a Free Quote <i data-lucide="arrow-right"></i></button>
+          <a class="btn btn-ghost" href="tel:0800765276"><i data-lucide="phone"></i> 0800 765 276</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================= TESTIMONIALS ================================================= -->
+<section class="page" id="page-testimonials">
+  <div class="page-hero">
+    <img class="hero-bg" src="https://www.aforenergy.com/wp-content/uploads/2025/09/5-5.webp?q=80&w=2200&auto=format&fit=crop" alt="Bright New Zealand home under a blue sky" loading="lazy">
+    <div class="hero-overlay"></div>
+    <div class="container page-hero-in" data-reveal>
+      <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Testimonials</span>
+      <h1>Kiwis are switching — <span class="hl">and talking about it.</span></h1>
+      <p class="lead">Real reviews from real New Zealand homes, farms and businesses.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="rating-band" data-reveal>
+        <div class="rating-hero">
+          <span class="big">4.9<span style="font-size:1.4rem;color:var(--muted)">/5</span></span>
+          <div class="stars" style="margin:8px 0 10px" aria-label="4.9 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p style="font-weight:600;color:var(--navy-2);font-size:.95rem">612 verified reviews from customers across New Zealand</p>
+        </div>
+        <div class="platform-card"><span class="score">4.9</span><div class="stars" style="margin:8px 0"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div><p>Google Reviews · 482 ratings</p></div>
+        <div class="platform-card"><span class="score">4.8</span><div class="stars" style="margin:8px 0"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div><p>Facebook · 95 ratings</p></div>
+        <div class="platform-card"><span class="score">5.0</span><div class="stars" style="margin:8px 0"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div><p>Master Electricians NZ · 35 audits</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sec-cream" style="padding-top:64px">
+    <div class="container">
+      <div class="feat-story" data-reveal>
+        <div class="split-media">
+          <img src="https://cdn.sanity.io/images/bqalfhqj/production/b0ce0b9d24f58cec6aaeae1dffece17d4b94cd2e-4000x2400.jpg?w=2000" alt="The Wallace family's modern Cambridge home with solar" loading="lazy">
+          <div class="float-card"><span class="fc-num">$4,100</span><span class="fc-text">saved in their first year on solar</span></div>
+        </div>
+        <div>
+          <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Featured story</span>
+          <p class="feat-quote">"Our October power bill was $11. Forty years in this house, and we've never seen anything like it."</p>
+          <div class="rv-foot" style="padding:0">
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Margaret Wallace">
+            <div><div class="rv-name">Margaret &amp; John Wallace</div><div class="rv-meta">Cambridge · 10kW + 2 batteries · Customers since 2022</div></div>
+          </div>
+          <ul class="chips" style="margin-top:22px">
+            <li>$4,100 saved in year one</li><li>9.8 MWh generated</li><li>EV charged free</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Wall of love</span>
+        <h2>Verified reviews, from Cape Reinga to Bluff</h2>
+      </div>
+      <div class="rv-grid">
+        <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Our power bill dropped from $245 to under $60 a month. The install was tidy and fast, and the team explained everything in plain English."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Bennett" loading="lazy"><div><div class="rv-name">Sarah &amp; Tom Bennett</div><div class="rv-meta">Tauranga · 6.6kW + Battery</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Quotes were clear with zero pressure. The system hit its projected output in year one — our warehouse costs are visibly lower."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="David Chen" loading="lazy"><div><div class="rv-name">David Chen</div><div class="rv-meta">Auckland · Commercial 32kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"When the winter outages hit, our lights stayed on while the street went dark. Best home investment we've ever made."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Megan Fraser" loading="lazy"><div><div class="rv-name">Megan Fraser</div><div class="rv-meta">Christchurch · 5kW + Battery</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <!-- <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"From first phone call to switch-on in three weeks. A genuine local crew who turn up when they say they will."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Wiremu Ngata" loading="lazy"><div><div class="rv-name">Wiremu Ngata</div><div class="rv-meta">Napier · 9.8kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Three quotes later, The Solar Co was the only company that designed around our roof — not around a sales target."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Priya Sharma" loading="lazy"><div><div class="rv-name">Priya Sharma</div><div class="rv-meta">Hamilton · 5kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Even through an Otago winter we're exporting power back to the grid. The monitoring app is honestly addictive."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Graeme Mitchell" loading="lazy"><div><div class="rv-name">Graeme &amp; Lois Mitchell</div><div class="rv-meta">Dunedin · 4kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"The battery paid for itself in pure convenience. Dinner parties, heat pump, dryer — all running on yesterday's sunshine."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Rachel Owen" loading="lazy"><div><div class="rv-name">Rachel &amp; Sam Owen</div><div class="rv-meta">Wellington · 8kW + Battery</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"They took the time to kōrero with our whole whānau before touching the marae roof. The new system powers our kitchen and wharenui."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Hone Tepania" loading="lazy"><div><div class="rv-name">Hone Tepania</div><div class="rv-meta">Whangārei · 12kW Marae Install</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article>
+        <article class="review-card" data-reveal>
+          <div class="stars" aria-label="5 out of 5 stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+          <p>"Immaculate work on our tricky schist roof. Two years on, output is still within 2% of their original estimate."</p>
+          <div class="rv-foot"><img src="https://randomuser.me/api/portraits/women/29.jpg" alt="Lisa Murphy" loading="lazy"><div><div class="rv-name">Lisa Murphy</div><div class="rv-meta">Queenstown · 7kW</div></div></div>
+          <span class="verified"><i data-lucide="badge-check"></i> Verified installation</span>
+        </article> -->
+      </div>
+    </div>
+  </section>
+
+  <section class="section sec-mist">
+    <div class="container">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Customer homes</span>
+        <h2>Sunshine, delivered nationwide</h2>
+      </div>
+      <div class="gallery" data-reveal>
+        <figure><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeg54L-v4Bi3Tc39kKkVQYkuTfXHkcjSTwGiqy8qEJiWivlqYJEns6jIY&s=10?q=80&w=1000&auto=format&fit=crop" alt="Modern customer home with solar" loading="lazy"></figure>
+        <figure><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlw3GxEUqj0k33E34RHIvTIgPZJqcB8U7EmpNz4YUyCTBgHCFG18FPaKs&s=10?q=80&w=1000&auto=format&fit=crop" alt="Suburban customer home with solar" loading="lazy"></figure>
+        <figure><img src="https://solarwindependence.com/wp-content/uploads/2015/12/family-solar-1200x628_sm.jpg?q=80&w=1000&auto=format&fit=crop" alt="Family customer home with solar" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner" data-reveal>
+        <svg class="cta-arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg>
+        <div class="cta-copy">
+          <span class="eyebrow">Join them</span>
+          <h2>Be our next 5-star story</h2>
+          <p>2,500+ NZ households and businesses already run on The Solar Co. Yours could be next.</p>
+        </div>
+        <div class="cta-actions">
+          <button class="btn btn-primary" data-quote>Request a Free Quote <i data-lucide="arrow-right"></i></button>
+          <a class="btn btn-ghost" href="tel:0800765276"><i data-lucide="phone"></i> 0800 765 276</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================= CONTACT ================================================= -->
+<section class="page" id="page-contact">
+  <div class="page-head">
+    <div class="container" data-reveal>
+      <span class="eyebrow"><svg class="arc" viewBox="0 0 110 100" aria-hidden="true"><use href="#dotArc"/></svg> Contact us</span>
+      <h1>Let's talk solar</h1>
+      <p class="lead">Call, email or send the form — a real Kiwi replies, usually within 2 working hours.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div>
+        <div class="c-cards" data-reveal>
+          <div class="c-card">
+            <div class="c-ic"><i data-lucide="phone"></i></div>
+            <div><h4>Call us</h4><a href="tel:0800765276">0800 765 276</a><p>Toll-free nationwide</p></div>
+          </div>
+          <div class="c-card">
+            <div class="c-ic"><i data-lucide="mail"></i></div>
+            <div><h4>Email</h4><a href="mailto:hello@thesolarco.nz">hello@thesolarco.nz</a><p>Replies within 4 hours</p></div>
+          </div>
+          <div class="c-card">
+            <div class="c-ic"><i data-lucide="map-pin"></i></div>
+            <div><h4>Visit</h4><p>Unit 4, 36 Rosebank Road,<br>Avondale, Auckland 1026</p></div>
+          </div>
+          <div class="c-card">
+            <div class="c-ic"><i data-lucide="clock"></i></div>
+            <div><h4>Hours</h4><p>Mon–Fri 8:00–17:30<br>Sat 9:00–13:00</p></div>
+          </div>
+        </div>
+        <div class="map-wrap" data-reveal>
+          <iframe title="The Solar Co — Avondale, Auckland map" src="https://maps.google.com/maps?q=Avondale%2C%20Auckland%2C%20New%20Zealand&z=13&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <p class="map-note" data-reveal><i data-lucide="map-pin"></i> Avondale, Auckland — showroom visits by appointment.</p>
+      </div>
+
+      <div class="form-card" data-reveal>
+        <h3>Request your free quote</h3>
+        <p class="form-sub">Takes 60 seconds — no obligation, no pushy sales.</p>
+        <form class="js-quote-form" id="contactQuoteForm" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="c-name">Full name <span class="req">*</span></label>
+              <input id="c-name" name="name" type="text" placeholder="Jane Cooper" autocomplete="name" required>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="c-email">Email <span class="req">*</span></label>
+              <input id="c-email" name="email" type="email" placeholder="jane@email.co.nz" autocomplete="email" required>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="c-phone">Phone <span class="req">*</span></label>
+              <input id="c-phone" name="phone" type="tel" placeholder="021 555 123" autocomplete="tel" required>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="c-ptype">Property type <span class="req">*</span></label>
+              <select id="c-ptype" name="ptype" required>
+                <option value="" disabled selected>Choose one…</option>
+                <option>Own my home</option>
+                <option>Business / commercial</option>
+                <option>Farm or lifestyle</option>
+                <option>Rental property</option>
+                <option>Other</option>
+              </select>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field full">
+              <label for="c-location">Location <span class="req">*</span></label>
+              <input id="c-location" name="location" type="text" placeholder="Town or city, e.g. Tauranga" autocomplete="address-level2" required>
+              <span class="field-error" role="alert"></span>
+            </div>
+            <div class="field full">
+              <label for="c-message">Message</label>
+              <textarea id="c-message" name="message" placeholder="Roof type, current power bill, anything else we should know… (optional)"></textarea>
+              <span class="field-error" role="alert"></span>
+            </div>
+          </div>
+          <div style="margin-top:20px"><button type="submit" class="btn btn-primary" style="width:100%">Send My Request <i data-lucide="arrow-right"></i></button></div>
+          <p class="form-micro"><i data-lucide="lock"></i> Your details stay private. No spam, ever.</p>
+        </form>
+        <div class="form-success" id="contactQuoteSuccess" hidden>
+          <div class="success-ic"><i data-lucide="check"></i></div>
+          <h3>Thanks, <span class="s-name">there</span>!</h3>
+          <p>Your request is in. A real Kiwi from our team will call you within one working day.</p>
+          <button type="button" class="btn btn-ghost btn-sm js-again">Send another enquiry</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="f-brand">
+      <span >
+      <img src="https://i.ibb.co.com/1f7JyQHJ/EXAMPLE-BRAND-removebg-preview.png" alt="The Solar Co logo" style="width:100px; height:50px;" loading="lazy" onerror="this.style.display='none'">
+      </span>
+      <p>The Solar Co designs, installs and cares for premium solar systems across New Zealand. Kiwi owned, locally staffed — and proud of it since 2011.</p>
+      <div style="display:flex;align-items:center;gap:12px;">
+  <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#24364B;background:#fff;border:1px solid #E5E7EB;border-radius:50%;text-decoration:none;">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+  </a>
+
+  <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#24364B;background:#fff;border:1px solid #E5E7EB;border-radius:50%;text-decoration:none;">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+  </a>
+
+  <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#24364B;background:#fff;border:1px solid #E5E7EB;border-radius:50%;text-decoration:none;">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8.5A2.5 2.5 0 1 0 6.5 3.5a2.5 2.5 0 0 0 0 5zM4 10h5v10H4V10zm7 0h4.8v1.4h.1c.7-1.2 2.3-2 4.4-2 4.7 0 5.7 3.1 5.7 7.1V20h-5v-4.9c0-1.2 0-2.8-1.8-2.8s-2.1 1.3-2.1 2.7V20h-5V10z"/></svg>
+  </a>
+
+  <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#24364B;background:#fff;border:1px solid #E5E7EB;border-radius:50%;text-decoration:none;">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/></svg>
+  </a>
+</div>
+
+
+      <!-- <div class="socials">
+        <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+        <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+      </div> -->
+    </div>
+    <nav class="f-col" aria-label="Explore">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#home" data-quote>Get a Quote</a></li>
+      </ul>
+    </nav>
+    <nav class="f-col" aria-label="Services">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Solar Panel Systems</a></li>
+        <li><a href="#services">Battery Storage</a></li>
+        <li><a href="#services">Commercial Solar</a></li>
+        <li><a href="#services">Consultations</a></li>
+        <li><a href="#services">System Design</a></li>
+        <li><a href="#services">Maintenance &amp; Aftercare</a></li>
+      </ul>
+    </nav>
+    <div class="f-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:0800765276"><i data-lucide="phone"></i> 0800 765 276</a></li>
+        <li><a href="mailto:hello@thesolarco.nz"><i data-lucide="mail"></i> hello@thesolarco.nz</a></li>
+        <li><span><i data-lucide="map-pin"></i> Unit 4, 36 Rosebank Road, Avondale, Auckland 1026</span></li>
+        <li><span><i data-lucide="clock"></i> Mon–Fri 8:00–17:30 · Sat 9:00–13:00</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container f-bottom">
+    <p>© 2026 The Solar Co Ltd — proudly New Zealand owned. All rights reserved by Zannatul.</p>
+    <nav class="f-legal" aria-label="Legal">
+      <a href="#" data-legal="privacy">Privacy Policy</a>
+      <a href="#" data-legal="terms">Terms of Trade</a>
+      <a href="#" data-legal="safety">Health &amp; Safety</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- ================= QUOTE MODAL ================= -->
+<div class="modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <h3 id="quoteModalTitle">Request your free quote</h3>
+        <p>Average response time: 2 working hours.</p>
+      </div>
+      <button class="modal-x" data-close-modal aria-label="Close quote form"><i data-lucide="x"></i></button>
+    </div>
+    <form class="js-quote-form" id="quoteForm" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label for="m-name">Full name <span class="req">*</span></label>
+          <input id="m-name" name="name" type="text" placeholder="Jane Cooper" autocomplete="name" required>
+          <span class="field-error" role="alert"></span>
+        </div>
+        <div class="field">
+          <label for="m-email">Email <span class="req">*</span></label>
+          <input id="m-email" name="email" type="email" placeholder="jane@email.co.nz" autocomplete="email" required>
+          <span class="field-error" role="alert"></span>
+        </div>
+        <div class="field">
+          <label for="m-phone">Phone <span class="req">*</span></label>
+          <input id="m-phone" name="phone" type="tel" placeholder="021 555 123" autocomplete="tel" required>
+          <span class="field-error" role="alert"></span>
+        </div>
+        <div class="field">
+          <label for="m-ptype">Property type <span class="req">*</span></label>
+          <select id="m-ptype" name="ptype" required>
+            <option value="" disabled selected>Choose one…</option>
+            <option>Own my home</option>
+            <option>Business / commercial</option>
+            <option>Farm or lifestyle</option>
+            <option>Rental property</option>
+            <option>Other</option>
+          </select>
+          <span class="field-error" role="alert"></span>
+        </div>
+        <div class="field full">
+          <label for="m-location">Location <span class="req">*</span></label>
+          <input id="m-location" name="location" type="text" placeholder="Town or city, e.g. Wellington" autocomplete="address-level2" required>
+          <span class="field-error" role="alert"></span>
+        </div>
+        <div class="field full">
+          <label for="m-message">Message</label>
+          <textarea id="m-message" name="message" placeholder="Roof type, current power bill, anything else we should know… (optional)"></textarea>
+          <span class="field-error" role="alert"></span>
+        </div>
+      </div>
+      <div style="margin-top:20px"><button type="submit" class="btn btn-primary" style="width:100%">Send My Request <i data-lucide="arrow-right"></i></button></div>
+      <p class="form-micro"><i data-lucide="lock"></i> Your details stay private. No spam, ever.</p>
+    </form>
+    <div class="form-success" id="quoteFormSuccess" hidden>
+      <div class="success-ic"><i data-lucide="check"></i></div>
+      <h3>Thanks, <span class="s-name">there</span>!</h3>
+      <p>Your request is in. A real Kiwi from our team will call you within one working day.</p>
+      <button type="button" class="btn btn-primary btn-sm" data-close-modal>Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= LEGAL MODAL ================= -->
+<div class="modal" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="infoTitle">Information</h3>
+      <button class="modal-x" id="infoClose" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="info-body" id="infoBody"></div>
+  </div>
+</div>
+
+<button class="to-top" id="toTop" aria-label="Back to top"><i data-lucide="chevron-up"></i></button>
+
+<script>
+/* ---------------- HELPERS ---------------- */
+const $  = (s, c=document) => c.querySelector(s);
+const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
+
+/* ---------------- ROUTER ---------------- */
+const PAGES  = ['home','about','services','testimonials','contact'];
+const TITLES = {
+  home:'The Solar Co — NZ Solar Panels, Batteries & Installation',
+  about:'About Us — The Solar Co',
+  services:'Our Services — The Solar Co',
+  testimonials:'Customer Testimonials — The Solar Co',
+  contact:'Contact & Free Quote — The Solar Co'
+};
+function currentPage(){
+  const h = location.hash.replace(/^#\/?/, '');
+  return PAGES.includes(h) ? h : 'home';
+}
+function render(){
+  const p = currentPage();
+  $$('.page').forEach(sec => sec.classList.toggle('active', sec.id === 'page-' + p));
+  $$('[data-nav]').forEach(a => a.classList.toggle('active', a.getAttribute('data-nav') === p));
+  document.title = TITLES[p];
+  closeMenu();
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  buildDots();
+}
+window.addEventListener('hashchange', render);
+
+/* In-page smooth scrolling */
+function scrollToSection(id){
+  const t = document.getElementById(id);
+  if(!t) return;
+  const y = t.getBoundingClientRect().top + window.scrollY - 84;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+}
+$$('[data-scroll]').forEach(el => el.addEventListener('click', e => {
+  e.preventDefault();
+  const target = el.dataset.scroll;
+  const page = el.dataset.page || currentPage();
+  if(page !== currentPage()){
+    location.hash = page === 'home' ? '#home' : '#' + page;
+    setTimeout(() => scrollToSection(target), 90);
+  } else {
+    scrollToSection(target);
+  }
+  closeMenu();
+}));
+/* Clicking active nav link / logo scrolls back to top */
+$$('.nav-link, .brand').forEach(a => a.addEventListener('click', () => {
+  closeMenu();
+  const href = a.getAttribute('href') || '';
+  if((href === '#home' && currentPage() === 'home') || (href === '#' + currentPage() && href !== '#')) {
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+  }
+}));
+
+/* ---------------- HEADER / MOBILE MENU ---------------- */
+const header = $('#siteHeader');
+const navToggle = $('#navToggle');
+navToggle.addEventListener('click', () => {
+  const open = header.classList.toggle('menu-open');
+  navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+function closeMenu(){
+  header.classList.remove('menu-open');
+  navToggle.setAttribute('aria-expanded','false');
+}
+const toTop = $('#toTop');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 10);
+  toTop.classList.toggle('show', window.scrollY > 700);
+}, { passive: true });
+toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ---------------- REVEAL ON SCROLL ---------------- */
+const rObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('revealed'); rObs.unobserve(e.target); } });
+}, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+$$('[data-reveal]').forEach(el => rObs.observe(el));
+
+/* ---------------- COUNTERS ---------------- */
+function animateCount(el){
+  const target = parseFloat(el.dataset.count);
+  const dec = parseInt(el.dataset.decimals || '0', 10);
+  const suffix = el.dataset.suffix || '';
+  const dur = 1400, t0 = performance.now();
+  const fmt = n => n.toLocaleString('en-NZ', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  function tick(t){
+    const p = Math.min((t - t0) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmt(target * e) + suffix;
+    if(p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const cObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ animateCount(e.target); cObs.unobserve(e.target); } });
+}, { threshold: .5 });
+$$('.stat-num').forEach(el => cObs.observe(el));
+
+/* ---------------- FAQ ACCORDION ---------------- */
+$$('.faq-item').forEach(item => {
+  const btn = $('.faq-q', item), panel = $('.faq-a', item);
+  btn.addEventListener('click', () => {
+    const wasOpen = item.classList.contains('open');
+    $$('.faq-item.open').forEach(o => {
+      o.classList.remove('open');
+      $('.faq-a', o).style.maxHeight = null;
+      $('.faq-q', o).setAttribute('aria-expanded','false');
+    });
+    if(!wasOpen){
+      item.classList.add('open');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+      btn.setAttribute('aria-expanded','true');
+    }
+  });
+});
+
+/* ---------------- REVIEW CAROUSEL ---------------- */
+const vp = $('#tCarousel');
+const dotsWrap = $('#tDots');
+let tDots = [], tIdx = 0, tTimer = null;
+function buildDots(){
+  if(!vp || !dotsWrap) return;
+  if(vp.offsetParent === null){ return; } // page hidden
+  const max = vp.scrollWidth - vp.clientWidth;
+  const pages = max <= 4 ? 1 : Math.round(max / vp.clientWidth) + 1;
+  dotsWrap.innerHTML = '';
+  tDots = [];
+  for(let i = 0; i < pages; i++){
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Go to reviews page ' + (i + 1));
+    b.addEventListener('click', () => { tGo(i); restartTimer(); });
+    dotsWrap.appendChild(b);
+    tDots.push(b);
+  }
+  updateDots();
+}
+function tGo(i){
+  if(!tDots.length) return;
+  tIdx = Math.max(0, Math.min(i, tDots.length - 1));
+  vp.scrollTo({ left: tIdx * vp.clientWidth, behavior: 'smooth' });
+}
+function updateDots(){
+  if(!vp || !tDots.length) return;
+  const i = vp.clientWidth ? Math.round(vp.scrollLeft / vp.clientWidth) : 0;
+  tIdx = Math.min(i, tDots.length - 1);
+  tDots.forEach((d, di) => d.classList.toggle('active', di === tIdx));
+}
+function startTimer(){
+  clearInterval(tTimer);
+  tTimer = setInterval(() => {
+    if(currentPage() === 'home' && document.visibilityState === 'visible' && tDots.length){
+      tGo((tIdx + 1) % tDots.length);
+    }
+  }, 6000);
+}
+function restartTimer(){ startTimer(); }
+if(vp){
+  buildDots();
+  vp.addEventListener('scroll', () => requestAnimationFrame(updateDots), { passive: true });
+  $('#tPrev').addEventListener('click', () => { tGo(tIdx - 1); restartTimer(); });
+  $('#tNext').addEventListener('click', () => { tGo(tIdx + 1); restartTimer(); });
+  vp.addEventListener('pointerenter', () => clearInterval(tTimer));
+  vp.addEventListener('pointerleave', startTimer);
+  window.addEventListener('resize', buildDots);
+  startTimer();
+}
+
+/* ---------------- FORM VALIDATION ---------------- */
+function clearErrors(form){
+  $$('.field', form).forEach(f => {
+    f.classList.remove('has-error');
+    const inp = f.querySelector('input,select,textarea');
+    if(inp){ inp.classList.remove('invalid'); inp.removeAttribute('aria-invalid'); }
+  });
+}
+function validateForm(form){
+  let ok = true, first = null;
+  $$('.field', form).forEach(f => {
+    const inp = f.querySelector('input,select,textarea');
+    if(!inp) return;
+    const err = $('.field-error', f);
+    let msg = '';
+    const v = inp.value.trim();
+    if(inp.required && !v){
+      msg = inp.tagName === 'SELECT' ? 'Please choose an option' : 'This field is required';
+    } else if(inp.name === 'email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v)){
+      msg = 'Please enter a valid email address';
+    } else if(inp.name === 'phone' && v && !/^\+?[\d\s()-]{7,16}$/.test(v)){
+      msg = 'Please enter a valid phone number';
+    }
+    if(msg){
+      ok = false;
+      f.classList.add('has-error');
+      err.textContent = msg;
+      inp.classList.add('invalid');
+      inp.setAttribute('aria-invalid','true');
+      if(!first) first = inp;
+    }
+  });
+  if(first) first.focus();
+  return ok;
+}
+$$('form.js-quote-form').forEach(form => {
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    clearErrors(form);
+    if(!validateForm(form)) return;
+    const name = form.querySelector('[name=name]').value.trim().split(' ')[0] || 'there';
+    form.hidden = true;
+    const success = form.parentElement.querySelector('.form-success');
+    success.querySelector('.s-name').textContent = name;
+    success.hidden = false;
+    const done = success.querySelector('button');
+    if(done) done.focus();
+  });
+  form.addEventListener('input', e => {
+    const f = e.target.closest('.field');
+    if(f){ f.classList.remove('has-error'); e.target.classList.remove('invalid'); }
+  });
+});
+$$('.js-again').forEach(b => b.addEventListener('click', () => {
+  const wrap = b.closest('.form-card');
+  const form = wrap.querySelector('form');
+  form.reset();
+  clearErrors(form);
+  form.hidden = false;
+  wrap.querySelector('.form-success').hidden = true;
+  const n = form.querySelector('[name=name]');
+  if(n) n.focus();
+}));
+
+/* ---------------- QUOTE MODAL ---------------- */
+const quoteModal = $('#quoteModal');
+let lastFocus = null;
+function openQuoteModal(service){
+  lastFocus = document.activeElement;
+  closeMenu();
+  quoteModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if(service){
+    const m = $('#m-message');
+    if(m) m.value = "Hi — I'd like to know more about " + service + ".";
+  }
+  setTimeout(() => { const f = $('#m-name'); if(f && !$('#quoteForm').hidden) f.focus(); }, 80);
+}
+function closeQuoteModal(){
+  quoteModal.classList.remove('open');
+  document.body.style.overflow = '';
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+  setTimeout(() => {
+    const form = $('#quoteForm');
+    if(form && form.hidden){
+      form.reset(); clearErrors(form);
+      form.hidden = false;
+      $('#quoteFormSuccess').hidden = true;
+    }
+  }, 350);
+}
+$$('[data-quote]').forEach(b => b.addEventListener('click', e => {
+  e.preventDefault();
+  openQuoteModal(b.dataset.service || '');
+}));
+$$('[data-close-modal]').forEach(b => b.addEventListener('click', closeQuoteModal));
+quoteModal.addEventListener('click', e => { if(e.target === quoteModal) closeQuoteModal(); });
+
+/* ---------------- LEGAL / INFO MODAL ---------------- */
+const LEGAL = {
+  privacy: { t:'Privacy Policy', b:'<p>The Solar Co collects only the information you choose to share through this website — typically your name, contact details and property information — to prepare quotes and deliver our services.</p><p>We never sell your data and never share it with third parties outside the installation process. You can request access to, or deletion of, your information at any time by emailing <strong>privacy@thesolarco.nz</strong>.</p>' },
+  terms: { t:'Terms of Trade', b:'<p>All quotes are fixed-price and valid for 30 days. A 10% deposit secures your installation date, with the balance due on commissioning and handover of your monitoring app.</p><p>Workmanship is warranted for 10 years. Product warranties (panels, inverters, batteries) are provided by manufacturers and fully supported by our NZ-based service team. Full terms accompany every written quote.</p>' },
+  safety: { t:'Health & Safety', b:'<p>Every installation is completed by certified electricians working to AS/NZS 3000 and AS/NZS 5033 standards, under site-specific safety plans with daily toolbox briefings.</p><p>The Solar Co holds $20M public liability insurance, is audited annually under the Master Electricians programme, and has maintained a zero-harm record for five consecutive years.</p>' }
+};
+const infoModal = $('#infoModal');
+function openInfo(key){
+  const d = LEGAL[key];
+  if(!d) return;
+  $('#infoTitle').textContent = d.t;
+  $('#infoBody').innerHTML = d.b;
+  infoModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeInfo(){
+  infoModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+$$('[data-legal]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openInfo(a.dataset.legal); }));
+$('#infoClose').addEventListener('click', closeInfo);
+infoModal.addEventListener('click', e => { if(e.target === infoModal) closeInfo(); });
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ closeQuoteModal(); closeInfo(); }
+});
+
+/* ---------------- SAVINGS ESTIMATOR ---------------- */
+const billRange = $('#billRange');
+if(billRange){
+  const update = () => {
+    const b = +billRange.value;
+    const year = Math.round(b * 12 * 0.55);
+    $('#billVal').textContent = '$' + b;
+    $('#saveYear').textContent = '$' + year.toLocaleString('en-NZ');
+    $('#save10').textContent = '$' + (year * 10).toLocaleString('en-NZ');
+  };
+  billRange.addEventListener('input', update);
+  update();
+}
+
+/* ---------------- INIT ---------------- */
+render();
+if(window.lucide){ try { lucide.createIcons(); } catch(e){} }
+</script>
+</body>
+</html>
